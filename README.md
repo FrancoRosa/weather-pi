@@ -1,70 +1,29 @@
-# Getting Started with Create React App
+# Weather Pi
+> Weather and forecast monitor.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Display fields
+Current Conditions:
+Temperature: degrees F
+Condition: eg sunny, cloudy, fog
+Humidity: Eg; 48%
+Wind Speed: Eg W 9 mph
+Barometer:Eg 30.20 in
+Dewpoint: Eg -26°F (-32°C)
+Visibility: Eg 10.00 mi
+Wind Chill: Eg -29°F (-34°C)
+Last update: Eg 7 Feb 11:35 am CST
+Detailed Forecast: eg Mostly sunny and cold, with a high near -5. Wind chill values as low as -31. West wind 5 to 10 mph
 
-## Available Scripts
+## Alert details
+"category": "Met",
+"severity": "Moderate",
+"certainty": "Likely",
+"urgency": "Expected",
+"event": "Wind Chill Advisory",
+"headline": "Wind Chill Advisory issued February 7 at 12:05PM CST until February 9 at 12:00PM CST by NWS Duluth MN",
+"description": "...PROLONGED PERIOD OF BITTERLY COLD TEMPERATURES AND WIND\nCHILLS...\n\n* WHAT...Very cold wind chills. Wind chills as low as 35 below\nzero.\n\n* WHERE...Iron, Douglas, Bayfield and Ashland Counties. This\nincludes the Tribal Lands of the Red Cliff Band and the Bad\nRiver Reservation.\n\n* WHEN...Until noon CST Tuesday.\n\n* IMPACTS...The dangerously cold wind chills could cause\nfrostbite on exposed skin in as little as 10 minutes.",
+"instruction": "Use caution while traveling outside. Wear appropriate clothing, a\nhat, and gloves.",
+"NWSheadline": [
+"WIND CHILL ADVISORY REMAINS IN EFFECT UNTIL NOON CST TUESDAY"
 
-In the project directory, you can run:
-
-### `yarn start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## API: https://api.weather.gov/

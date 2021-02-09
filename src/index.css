@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.weather__container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.weather__table{
+  text-align: left;
+}
+.weather__table > tbody > tr > *{
+  padding: 0 1em;
+}
+
+.weather__container > h3{
+  margin-bottom: 0;
+}
