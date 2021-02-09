@@ -1,4 +1,36 @@
+import { useEffect } from "react";
+import axios from 'axios';
+
 const CurrentConditions = () => {
+  const interval = 60*1000; // in ms one every minute 
+  const host = 'localhost';
+  const mail = 'km115.franco@gmail.com';
+  const latitude = 39.7456;
+  const longitude = -97.0892;
+  const state = 'KS';
+  const urlForecast = `https://api.weather.gov/points/${latitude},${longitude}`;
+  const urlAlert = `https://api.weather.gov/alerts/active?area=${state}`;
+
+
+  const getData = () =>{
+    console.log('...reaching server');
+    axios.get(urlForecast, {
+      headers: {
+        'User-Agent': (host, mail),
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => {
+      console.log(res.data);
+    });
+  }
+
+  useEffect(()=>{
+    // setInterval(getData, interval)
+    getData();
+  },[]);
+
   return (
     <div className="weather__container">
       <h1>Current Conditions:</h1>
