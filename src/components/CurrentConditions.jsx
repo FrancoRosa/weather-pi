@@ -3,17 +3,20 @@ import axios from 'axios';
 
 const CurrentConditions = () => {
   const interval = 2; // minutes 
-  const host = 'localhost';
-  const mail = 'km115.franco@gmail.com';
   const latitude = 39.7456;
   const longitude = -97.0892;
   const state = 'KS';
   const urlPoint = `https://api.weather.gov/points/${latitude},${longitude}`;
   const urlAlert = `https://api.weather.gov/alerts/active?area=${state}`;
   let urlForecast = '';
+  const openWeatherKey = '37fe7dced1adaf904d0ca7f5e66ff95b'
+  const urlOpenWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=daily,hourly,minutely&appid=${openWeatherKey}&units=imperial`;
 
   const [forecastUpdate, setForecastUpdate] = useState('');
   const [forecastPeriods, setForecastPeriods] = useState([]);
+  const [currentValues, setCurrentValues] = useState({});
+  const [currentUpdate, setCurrentUpdate] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
 
   const getForecastUrl = () =>{
     console.log('... getForecastUrl');
@@ -39,42 +42,64 @@ const CurrentConditions = () => {
         }
       })
       .then(res => {
-        setForecastUpdate(res.data.properties.updated)
-        setForecastPeriods(res.data.properties.periods)
-        console.log('....periods')
-        console.log(forecastPeriods)
-        console.log('....test')
-        if (forecastPeriods.length > 0) {
-          console.log(forecastPeriods[0].name)
-          console.log(forecastPeriods[0].detailedForecast)
-        }
+        const forecastTime = new Date(res.data.properties.updated).toString();
+        setForecastUpdate(forecastTime);
+        setForecastPeriods(res.data.properties.periods);
       });
     } else {
       getForecastUrl();
     }
   }
 
+  const getCurrentValues = () =>{
+    console.log('... getCurrentValues');
+    axios.get(urlOpenWeather, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => {
+      console.log(res.data.current)
+      setCurrentValues(res.data.current);
+      const currentClock = Date(currentValues.dt)
+      setCurrentUpdate(currentClock);
+    });
+  }
+
+  const getTime = () => {
+    const now = new Date().toString();
+    setCurrentTime(now);
+  }
+
   useEffect(()=>{
     getForecastUrl();
     setInterval(getForecast, interval*1000*60);
+    setInterval(getCurrentValues, interval*1000*60)
+    setInterval(getTime, 1000)
+    
+    getCurrentValues();
   },[]);
 
   return (
     <div className="weather__container">
-      <h1>Current Conditions:</h1>
+      <h2>Current Conditions:</h2>
       <table className="weather__table">
         <tbody>
-          <tr><th>Temperature:</th><td>8F</td></tr>
-          <tr><th>Condition:</th><td>Sunny</td></tr>
-          <tr><th>Humidity:</th><td>48%</td></tr>
-          <tr><th>WindSpeed:</th><td>48%</td></tr>
-          <tr><th>Barometer:</th><td>48%</td></tr>
-          <tr><th>Dewpoint:</th><td>48%</td></tr>
-          <tr><th>Visibility:</th><td>48%</td></tr>
-          <tr><th>WindChill:</th><td>48%</td></tr>
+          <tr><th>Temperature:</th><td>{currentValues.temp} ºF</td></tr>
+          <tr><th>Condition:</th><td>{currentValues.weather ? currentValues.weather[0].main : '0'}</td></tr>
+          <tr><th>Humidity:</th><td>{currentValues.humidity} %</td></tr>
+          <tr><th>WindSpeed:</th><td>{currentValues.wind_speed} miles/hour</td></tr>
+          <tr><th>Barometer:</th><td>{currentValues.pressure} hPa</td></tr>
+          <tr><th>Dewpoint:</th><td>{currentValues.dew_point}</td></tr>
+          <tr><th>Visibility:</th><td>{currentValues.visibility}</td></tr>
+          <tr><th>UV Index:</th><td>{currentValues.uvi}</td></tr>
         </tbody>
       </table>
-      <h3>Forecast:</h3>
+      <h3>Last update:</h3>
+      <p>{currentUpdate}</p>
+
+      <h2>Forecast:</h2>
       <table>
         <tbody>
           {forecastPeriods.map(forecast =>
@@ -86,7 +111,9 @@ const CurrentConditions = () => {
         </tbody>
       </table>
       <h3>Last forecast Update:</h3>
-      <p>{Date(forecastUpdate)}</p>
+      <p>{forecastUpdate}</p>
+      <h3>Now:</h3>
+      <p>{currentTime}</p>
     </div>
   );
 }
