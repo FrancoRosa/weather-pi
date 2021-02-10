@@ -81,7 +81,8 @@ const CurrentConditions = () => {
     })
     .then(res => {
       console.log(res.data)
-      setAlarmUpdate(res.data.updated);
+      const alarmClock = new Date(res.data.updated).toString()
+      setAlarmUpdate(alarmClock);
       setAlarmDetails(res.data.features);
     });
   }
@@ -92,16 +93,18 @@ const CurrentConditions = () => {
   }
 
   useEffect(()=>{
-    // getForecastUrl();
-    // setInterval(getForecast, interval*1000*60);
-    // setInterval(getCurrentValues, interval*1000*60)
-    // setInterval(getTime, 1000)
-    
+    getForecastUrl();
+    getCurrentValues();
     getAlerts();
+    setInterval(getForecast, interval*1000*60);
+    setInterval(getCurrentValues, interval*1000*60)
+    setInterval(getAlerts, interval*1000*60)
+    setInterval(getTime, 1000)
   },[]);
 
   return (
     <div className="weather__container">
+      <p>{currentTime}</p>
       <h2>Current Conditions:</h2>
       <table className="weather__table">
         <tbody>
@@ -131,9 +134,7 @@ const CurrentConditions = () => {
       </table>
       <h3>Last forecast Update:</h3>
       <p>{forecastUpdate}</p>
-      <h3>Now:</h3>
-      <p>{currentTime}</p>
-      
+            
       <h2>Alert:</h2>
       <table>
         <tbody>
@@ -149,9 +150,7 @@ const CurrentConditions = () => {
         </tbody>
       </table>
       <h3>Last Alarm Update:</h3>
-      <p>{forecastUpdate}</p>
-      <h3>Now:</h3>
-      <p>{currentTime}</p>
+      <p>{alarmUpdate}</p>
     </div>
   );
 }
