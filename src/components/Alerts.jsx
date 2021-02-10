@@ -2,6 +2,33 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import location from '../config.json'
 
+const GPIOEmulator = ({ headline }) => {
+  // warning, watch, advisory
+  // warning: show what the warning is.. and output to a GPIO
+  // watch: show what the watch is.. .and output to a GPIO
+  // advisory: show what the advisory is... No output to GPIO
+  // keywords: Tornado, Severe Thunderstorm
+  const warning = headline => {
+    if (headline) return headline.toLowerCase().includes('warning');
+    return false;
+  }
+  const watch = headline => {
+    if (headline) return headline.toLowerCase().includes('watch'); 
+    return false;
+  }
+
+  return (
+    <div>
+      <h3>GPIO OUTPUT</h3>
+      <h4>{headline}</h4>
+      <table>
+        <tr><th>Warning</th><td>{warning(headline) ? 'ON' : 'OFF'}</td></tr>
+        <tr><th>Watch</th><td>{watch(headline) ? 'ON' : 'OFF'}</td></tr>
+      </table>
+    </div>
+  )
+}
+
 const Alerts = () => {
   const intervalAlert = 5; // minutes 
   const state = location.state;
@@ -30,6 +57,8 @@ const Alerts = () => {
     setInterval(getAlerts, intervalAlert*1000*60)
   }, [])
 
+  
+
   return (
     <div className="weather__container">
       <h2>Alert:</h2>
@@ -46,6 +75,7 @@ const Alerts = () => {
           <tr><th>NWSheadline:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.parameters.NWSheadline : ''}</td></tr>
         </tbody>
       </table>
+      <GPIOEmulator headline={alarmDetails.length>0 ? alarmDetails[0].properties.headline : ''} />
       <h3>Last Alarm Update:</h3>
       <p>{alarmUpdate}</p>
     </div>
