@@ -1,34 +1,62 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
 
 const CurrentConditions = () => {
-  const interval = 60*1000; // in ms one every minute 
+  const interval = 2; // minutes 
   const host = 'localhost';
   const mail = 'km115.franco@gmail.com';
   const latitude = 39.7456;
   const longitude = -97.0892;
   const state = 'KS';
-  const urlForecast = `https://api.weather.gov/points/${latitude},${longitude}`;
+  const urlPoint = `https://api.weather.gov/points/${latitude},${longitude}`;
   const urlAlert = `https://api.weather.gov/alerts/active?area=${state}`;
+  let urlForecast = '';
 
+  const [forecastUpdate, setForecastUpdate] = useState('');
+  const [forecastPeriods, setForecastPeriods] = useState([]);
 
-  const getData = () =>{
-    console.log('...reaching server');
-    axios.get(urlForecast, {
+  const getForecastUrl = () =>{
+    console.log('... getForecastUrl');
+    axios.get(urlPoint, {
       headers: {
-        'User-Agent': (host, mail),
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     })
     .then(res => {
-      console.log(res.data);
+      urlForecast = res.data.properties.forecast;
+      getForecast();
     });
   }
 
+  const getForecast = () =>{
+    if (urlForecast) {
+      console.log('... getForecast');
+      axios.get(urlForecast, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+      .then(res => {
+        setForecastUpdate(res.data.properties.updated)
+        setForecastPeriods(res.data.properties.periods)
+        console.log('....periods')
+        console.log(forecastPeriods)
+        console.log('....test')
+        if (forecastPeriods.length > 0) {
+          console.log(forecastPeriods[0].name)
+          console.log(forecastPeriods[0].detailedForecast)
+        }
+      });
+    } else {
+      getForecastUrl();
+    }
+  }
+
   useEffect(()=>{
-    // setInterval(getData, interval)
-    getData();
+    getForecastUrl();
+    setInterval(getForecast, interval*1000*60);
   },[]);
 
   return (
@@ -47,9 +75,18 @@ const CurrentConditions = () => {
         </tbody>
       </table>
       <h3>Forecast:</h3>
-      <p>Mostly sunny and cold, with a high near -5. Wind chill values as low as -31. West wind 5 to 10 mph</p>
-      <h3>LastUpdate:</h3>
-      <p>M7 Feb 11:35 am CST</p>
+      <table>
+        <tbody>
+          {forecastPeriods.map(forecast =>
+            <tr>
+              <th>{forecast.name}</th>
+              <td>{forecast.detailedForecast}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      <h3>Last forecast Update:</h3>
+      <p>{Date(forecastUpdate)}</p>
     </div>
   );
 }
