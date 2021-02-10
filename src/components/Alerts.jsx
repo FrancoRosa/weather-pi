@@ -31,7 +31,7 @@ const Alerts = () => {
   }, [])
 
   return (
-    <div>
+    <div className="weather__container">
       <h2>Alert:</h2>
       <table>
         <tbody>

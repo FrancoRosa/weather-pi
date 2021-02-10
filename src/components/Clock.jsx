@@ -13,7 +13,7 @@ const Clock = () => {
     setInterval(getTime, 1000);
   },[])
   return(
-    <p>{currentTime}</p>
+    <p className="weather__container">{currentTime}</p>
   )
 }
 

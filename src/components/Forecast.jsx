@@ -38,7 +38,7 @@ const Forecast = () => {
       .then(res => {
         const forecastTime = new Date(res.data.properties.updated).toString();
         setForecastUpdate(forecastTime);
-        setForecastPeriods(res.data.properties.periods);
+        setForecastPeriods(res.data.properties.periods.splice(0,4));
       });
     } else {
       getForecastUrl();
@@ -51,7 +51,7 @@ const Forecast = () => {
   },[])
 
   return (
-    <div>
+    <div className="weather__container">
       <h2>Forecast:</h2>
       <table>
         <tbody>

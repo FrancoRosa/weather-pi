@@ -5,7 +5,7 @@ import Forecast from './Forecast';
 
 const App = () => {
   return (
-    <div className="App">
+    <div>
       <Clock />
       <CurrentConditions />
       <Forecast />
