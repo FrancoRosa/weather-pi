@@ -12,11 +12,16 @@ const CurrentConditions = () => {
   const openWeatherKey = '37fe7dced1adaf904d0ca7f5e66ff95b'
   const urlOpenWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=daily,hourly,minutely&appid=${openWeatherKey}&units=imperial`;
 
+  // time related
   const [forecastUpdate, setForecastUpdate] = useState('');
+  const [currentUpdate, setCurrentUpdate] = useState('');
+  const [alarmUpdate, setAlarmUpdate] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
+  
+  // values related
   const [forecastPeriods, setForecastPeriods] = useState([]);
   const [currentValues, setCurrentValues] = useState({});
-  const [currentUpdate, setCurrentUpdate] = useState('');
-  const [currentTime, setCurrentTime] = useState('');
+  const [alarmDetails, setAlarmDetails] = useState([]);
 
   const getForecastUrl = () =>{
     console.log('... getForecastUrl');
@@ -60,10 +65,24 @@ const CurrentConditions = () => {
       }
     })
     .then(res => {
-      console.log(res.data.current)
       setCurrentValues(res.data.current);
       const currentClock = Date(currentValues.dt)
       setCurrentUpdate(currentClock);
+    });
+  }
+
+  const getAlerts = () =>{
+    console.log('... getAlerts');
+    axios.get(urlAlert, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(res => {
+      console.log(res.data)
+      setAlarmUpdate(res.data.updated);
+      setAlarmDetails(res.data.features);
     });
   }
 
@@ -73,12 +92,12 @@ const CurrentConditions = () => {
   }
 
   useEffect(()=>{
-    getForecastUrl();
-    setInterval(getForecast, interval*1000*60);
-    setInterval(getCurrentValues, interval*1000*60)
-    setInterval(getTime, 1000)
+    // getForecastUrl();
+    // setInterval(getForecast, interval*1000*60);
+    // setInterval(getCurrentValues, interval*1000*60)
+    // setInterval(getTime, 1000)
     
-    getCurrentValues();
+    getAlerts();
   },[]);
 
   return (
@@ -111,6 +130,25 @@ const CurrentConditions = () => {
         </tbody>
       </table>
       <h3>Last forecast Update:</h3>
+      <p>{forecastUpdate}</p>
+      <h3>Now:</h3>
+      <p>{currentTime}</p>
+      
+      <h2>Alert:</h2>
+      <table>
+        <tbody>
+            <tr><th>Category:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.category : ''}</td></tr>
+            <tr><th>Severity:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.severity : ''}</td></tr>
+            <tr><th>Certainty:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.certainty : ''}</td></tr>
+            <tr><th>Urgency:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.urgency : ''}</td></tr>
+            <tr><th>Event:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.description : ''}</td></tr>
+            <tr><th>Headline:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.headline : ''}</td></tr>
+            <tr><th>Description:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.description : ''}</td></tr>
+            <tr><th>Instruction:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.instruction : ''}</td></tr>
+            <tr><th>NWSheadline:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.parameters.NWSheadline : ''}</td></tr>
+        </tbody>
+      </table>
+      <h3>Last Alarm Update:</h3>
       <p>{forecastUpdate}</p>
       <h3>Now:</h3>
       <p>{currentTime}</p>
