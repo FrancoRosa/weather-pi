@@ -26,4 +26,6 @@ Detailed Forecast: eg Mostly sunny and cold, with a high near -5. Wind chill val
 "NWSheadline": [
 "WIND CHILL ADVISORY REMAINS IN EFFECT UNTIL NOON CST TUESDAY"
 
-## API: https://api.weather.gov/
+## API Forecast & Alerts: https://api.weather.gov/
+## API Current Data: https://openweathermap.org/
+

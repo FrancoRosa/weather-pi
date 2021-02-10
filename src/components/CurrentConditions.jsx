@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 const CurrentConditions = () => {
-  const interval = 2; // minutes 
+  const interval = 5; // minutes 
+  const intervalCurrent = 15; // minutes to call to open weather 
   const latitude = 39.7456;
   const longitude = -97.0892;
   const state = 'KS';
@@ -97,7 +98,7 @@ const CurrentConditions = () => {
     getCurrentValues();
     getAlerts();
     setInterval(getForecast, interval*1000*60);
-    setInterval(getCurrentValues, interval*1000*60)
+    setInterval(getCurrentValues, intervalCurrent*1000*60)
     setInterval(getAlerts, interval*1000*60)
     setInterval(getTime, 1000)
   },[]);
