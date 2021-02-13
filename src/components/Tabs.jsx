@@ -6,7 +6,6 @@ const Tabs = ({setTab}) => {
     deactivateTabs();
     const element = event.target.tagName == 'A' ? event.target : event.target.parentElement;
     const tabName = element.id.split('_')[1];
-    console.log(tabName)
     setTab(tabName);
     element.parentElement.classList.add('is-active');
   };
@@ -37,6 +36,12 @@ const Tabs = ({setTab}) => {
           <a onClick={activateTab} id="tab_alert">
             <i className="fas fa-exclamation-triangle tab-icon"></i>
             <span className="tab-name">Alerts</span>
+          </a>
+        </li>
+        <li>
+          <a onClick={activateTab} id="tab_location">
+            <i className="fas fa-map-marker-alt tab-icon"></i>
+            <span className="tab-name">Location</span>
           </a>
         </li>
       </ul>

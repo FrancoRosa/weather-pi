@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import location from '../config.json'
+import location from '../config.json';
+import { connect } from 'react-redux';
 
 const GPIOEmulator = ({ headline }) => {
   // warning, watch, advisory
@@ -29,7 +30,7 @@ const GPIOEmulator = ({ headline }) => {
   )
 }
 
-const Alerts = () => {
+const Alerts = ({tab}) => {
   const intervalAlert = 5; // minutes 
   const state = location.state;
   const urlAlert = `https://api.weather.gov/alerts/active?area=${state}`;
@@ -58,7 +59,7 @@ const Alerts = () => {
   }, [])
 
   return (
-    <div className="weather__container">
+    <div className={tab === 'alert' ? '' : 'is-hidden'}>
       <h2>Alert:</h2>
       <table>
         <tbody>
@@ -80,4 +81,8 @@ const Alerts = () => {
   );
 };
 
-export default Alerts;
+const mapStateToProps = state => ({
+  tab: state.tab
+})
+
+export default connect(mapStateToProps)(Alerts)

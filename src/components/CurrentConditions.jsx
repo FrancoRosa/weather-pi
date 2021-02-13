@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import location from '../config.json'
+import location from '../config.json';
+import { connect } from 'react-redux';
 
-const CurrentConditions = () => {
+const CurrentConditions = ({tab}) => {
   const intervalCurrent = 15; // minutes to call to open weather 
   const latitude = location.latitude;
   const longitude = location.longitude;
@@ -34,7 +35,7 @@ const CurrentConditions = () => {
   },[]);
 
   return (
-    <div className="weather__container">
+    <div className={tab === 'now' ? '' : 'is-hidden'}>
       <h2>Current Conditions:</h2>
       <table className="weather__table">
         <tbody>
@@ -54,4 +55,8 @@ const CurrentConditions = () => {
   );
 }
 
-export default CurrentConditions;
+const mapStateToProps = state => ({
+  tab: state.tab
+})
+
+export default connect(mapStateToProps)(CurrentConditions)
