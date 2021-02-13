@@ -4,26 +4,20 @@ const Tabs = () => {
       <ul>
         <li class="is-active">
           <a>
-            <span class="icon is-small"><i class="fa fa-image"></i></span>
-            <span>Pictures</span>
+            <span class="icon is-small tab-icon"><i class="fas fa-clock"></i></span>
+            <span className="tab-name">Now</span>
           </a>
         </li>
         <li>
           <a>
-            <span class="icon is-small"><i class="fa fa-music"></i></span>
-            <span>Music</span>
+            <span class="icon is-small tab-icon"><i class="fas fa-calendar-times"></i></span>
+            <span className="tab-name">Forecast</span>
           </a>
         </li>
         <li>
           <a>
-            <span class="icon is-small"><i class="fa fa-film"></i></span>
-            <span>Videos</span>
-          </a>
-        </li>
-        <li>
-          <a>
-            <span class="icon is-small"><i class="fa fa-file-alt"></i></span>
-            <span>Documents</span>
+            <span class="icon is-small tab-icon"><i class="fas fa-exclamation-triangle"></i></span>
+            <span className="tab-name">Alerts</span>
           </a>
         </li>
       </ul>
