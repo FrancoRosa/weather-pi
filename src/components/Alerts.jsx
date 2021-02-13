@@ -57,8 +57,6 @@ const Alerts = () => {
     setInterval(getAlerts, intervalAlert*1000*60)
   }, [])
 
-  
-
   return (
     <div className="weather__container">
       <h2>Alert:</h2>
