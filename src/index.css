@@ -17,3 +17,7 @@
   display: flex;
   justify-content: space-between;
 }
+
+.footer-icon {
+  padding: 0 0.2em;
+}
