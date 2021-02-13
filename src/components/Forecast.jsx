@@ -69,6 +69,7 @@ const Forecast = ({ tab }) => {
     </div>
   );
 }
+
 const mapStateToProps = state => ({
   tab: state.tab
 });

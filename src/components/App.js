@@ -4,6 +4,7 @@ import CurrentConditions from './CurrentConditions';
 import Forecast from './Forecast';
 import Footer from './Footer';
 import Tabs from './Tabs';
+import Location from './Location';
 
 const App = () => {
   return (
@@ -13,7 +14,9 @@ const App = () => {
       <CurrentConditions />
       <Forecast />
       <Alerts />
+      <Location />
       <Footer />
+      
     </div>
   );
 }
