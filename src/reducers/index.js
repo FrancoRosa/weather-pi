@@ -1,8 +1,10 @@
 import { combineReducers, createStore } from 'redux';
 import tab from './tab';
+import fullLocation from './fullLocation';
 
 const rootReducer = combineReducers({
   tab,
+  fullLocation,
 });
 
 const store = createStore(
