@@ -5,7 +5,7 @@ const readLocalStorage = () => {
   if (savedData) {
     return JSON.parse(savedData)
   } else {
-    return {lat: 0, lng: 0, state: '', county: '', urlForecast:'', urlAlert: ''}
+    return {lat: 0, lng: 0, stateCode: '', countyCode: '', urlForecast:'', urlAlert: ''}
   }
 }
 

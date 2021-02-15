@@ -35,9 +35,9 @@ const Alerts = ({ tab, fullLocation }) => {
   const [alarmDetails, setAlarmDetails] = useState([]);
   
   const getAlerts = () =>{
-    if (fullLocation.county){
+    if (fullLocation.countyCode){
       console.log('... getAlerts');
-      const urlAlert = `https://api.weather.gov/alerts/active/zone/${fullLocation.county}`;
+      const urlAlert = `https://api.weather.gov/alerts/active/zone/${fullLocation.countyCode}`;
       axios.get(urlAlert, {
         headers: {
           'Content-Type': 'application/json',
