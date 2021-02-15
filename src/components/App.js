@@ -16,7 +16,6 @@ const App = () => {
       <Alerts />
       <Location />
       <Footer />
-      
     </div>
   );
 }

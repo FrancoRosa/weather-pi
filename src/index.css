@@ -1,6 +1,7 @@
 .footer {
   margin: 0;
   padding: 1em 0;
+  position: relative;
 }
 
 .tab-icon{
