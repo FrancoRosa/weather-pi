@@ -13,7 +13,7 @@ const watch = headline => {
 }
 
 const Alerts = ({ tab, fullLocation }) => {
-  const intervalAlert = 4; // minutes 
+  const intervalAlert = 5; // minutes 
   const [alarmUpdate, setAlarmUpdate] = useState('');
   const [alarmDetails, setAlarmDetails] = useState([
       {
@@ -48,7 +48,11 @@ const Alerts = ({ tab, fullLocation }) => {
   useEffect(() => {
     getAlerts();
     setInterval(getAlerts, intervalAlert*1000*60)
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    getAlerts();
+  }, [fullLocation])
 
   return (
     <div className={tab === 'alert' ? '' : 'is-hidden'}>

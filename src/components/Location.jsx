@@ -50,7 +50,7 @@ const Location = ({tab, google, selectedPlace, setLocationCoordinates, setLocati
         <LocationValue heading='county' value={fullLocation.countyCode} />
       </nav>
       <h1 className="title is-7 has-text-success has-text-centered heading">Click on the map to set the coordinates</h1>
-      <Map google={google} zoom={10} onClick={onMapClick} containerStyle={containerStyle} initialCenter={{lat: fullLocation.lat, lng: fullLocation.lng}}>
+      <Map google={google} zoom={4} onClick={onMapClick} containerStyle={containerStyle} initialCenter={{lat: fullLocation.lat, lng: fullLocation.lng}}>
         <Marker name={'target'} position={{lat: fullLocation.lat, lng: fullLocation.lng}}/>
       </Map>
     </div>

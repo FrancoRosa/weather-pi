@@ -35,6 +35,10 @@ const Forecast = ({ tab, setFullLocation, fullLocation }) => {
     setInterval(getForecast, intervalForecast*1000*60);
   },[])
 
+  useEffect(() => {
+    getForecast();
+  },[fullLocation])
+
   return (
     <div className={tab === 'forecast' ? '' : 'is-hidden'}>
       {forecastPeriods.map(period => (

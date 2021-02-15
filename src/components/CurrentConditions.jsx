@@ -13,7 +13,7 @@ const watch = headline => {
 }
 
 const CurrentConditions = ({ tab, fullLocation }) => {
-  const intervalCurrent = 4; // minutes to call to open weather 
+  const intervalCurrent = 5; // minutes to call to open weather 
   const openWeatherKey = '37fe7dced1adaf904d0ca7f5e66ff95b'
   
   let weatherValues = {
@@ -33,8 +33,8 @@ const CurrentConditions = ({ tab, fullLocation }) => {
   const [currentAlerts, setCurrentAlerts] = useState([]);
   const [currentLocation, setCurrentLocation] = useState({lat:0, lon:0})
   
-  const getCurrentValues = () =>{
-    const { lat, lng } = fullLocation;
+  const getCurrentValues = location =>{
+    const { lat, lng } = location;
     if (lat != 0 && lng != 0){
       const urlOpenWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=daily,hourly,minutely&appid=${openWeatherKey}&units=imperial`;
       axios.get(urlOpenWeather, {
@@ -56,9 +56,14 @@ const CurrentConditions = ({ tab, fullLocation }) => {
   }
 
   useEffect(()=>{
-    getCurrentValues();
-    setInterval(getCurrentValues, intervalCurrent*1000*60)
+    getCurrentValues(fullLocation);
+    setInterval(() => getCurrentValues(fullLocation), intervalCurrent*1000*60)
   },[]);
+
+  useEffect(()=>{
+    getCurrentValues(fullLocation);
+  },[fullLocation]);
+
 
   return (
     <div className={tab === 'now' ? '' : 'is-hidden'}>
