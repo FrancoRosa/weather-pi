@@ -44,7 +44,7 @@ const CurrentConditions = ({ tab, fullLocation }) => {
         }
       })
       .then(res => {
-        console.log('... Current Values')
+        console.log('>> Current Values:')
         console.log(res.data)
         setCurrentValues(res.data.current);
         setCurrentLocation({lat: res.data.lat, lon: res.data.lon})
