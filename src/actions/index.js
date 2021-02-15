@@ -1,5 +1,6 @@
 export const SET_TAB = 'SET_TAB';
-export const SET_FULL_LOCATION = 'SET_FULL_LOCATION';
+export const SET_LOCATION_DATA = 'SET_LOCATION_DATA';
+export const SET_LOCATION_COORDINATES = 'SET_LOCATION_COORDINATES';
 
 export const setTab = tab => (
   {
@@ -8,9 +9,16 @@ export const setTab = tab => (
   }
 );
 
-export const setFullLocation = fullLocation => (
+export const setLocationData = data => (
   {
-    fullLocation,
-    type: SET_FULL_LOCATION,
+    data,
+    type: SET_LOCATION_DATA,
+  }
+);
+
+export const setLocationCoordinates = location => (
+  {
+    location,
+    type: SET_LOCATION_COORDINATES,
   }
 );

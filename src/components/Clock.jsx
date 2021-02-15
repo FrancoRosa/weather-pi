@@ -16,7 +16,7 @@ const Clock = () => {
   },[])
   return(
     <div className="clock">
-      <h3 className="title is-3 has-text-link">{currentTime.date}</h3>
+      <h3 className="title is-3 has-text-link heading">{currentTime.date}</h3>
       <h3 className="title is-3 has-text-link">{currentTime.time}</h3>
     </div>
   )

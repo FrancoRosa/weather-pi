@@ -1,32 +1,30 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import location from '../config.json';
 import { connect } from 'react-redux';
 
-const CurrentConditions = ({tab}) => {
+const CurrentConditions = ({ tab, fullLocation }) => {
   const intervalCurrent = 15; // minutes to call to open weather 
-  const latitude = location.latitude;
-  const longitude = location.longitude;
-
   const openWeatherKey = '37fe7dced1adaf904d0ca7f5e66ff95b'
-  const urlOpenWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=daily,hourly,minutely&appid=${openWeatherKey}&units=imperial`;
-
+  
   const [currentUpdate, setCurrentUpdate] = useState('');
   const [currentValues, setCurrentValues] = useState({});
-
+  
   const getCurrentValues = () =>{
-    console.log('... getCurrentValues');
-    axios.get(urlOpenWeather, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-    .then(res => {
-      setCurrentValues(res.data.current);
-      const currentClock = Date(currentValues.dt)
-      setCurrentUpdate(currentClock);
-    });
+    if (fullLocation.lat != 0 && fullLocation.lng != 0){
+      console.log('... getCurrentValues');
+      const urlOpenWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${fullLocation.lat}&lon=${fullLocation.lng}&exclude=daily,hourly,minutely&appid=${openWeatherKey}&units=imperial`;
+      axios.get(urlOpenWeather, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+      .then(res => {
+        setCurrentValues(res.data.current);
+        const currentClock = Date(currentValues.dt)
+        setCurrentUpdate(currentClock);
+      });
+    }
   }
 
   useEffect(()=>{
@@ -56,7 +54,8 @@ const CurrentConditions = ({tab}) => {
 }
 
 const mapStateToProps = state => ({
-  tab: state.tab
+  tab: state.tab,
+  fullLocation: state.fullLocation
 })
 
 export default connect(mapStateToProps)(CurrentConditions)

@@ -1,36 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import location from '../config.json'
 import { connect } from "react-redux";
 
-const Forecast = ({ tab }) => {
-  const intervalForecast = 15; // minutes to call to open weather 
-  const latitude = location.latitude;
-  const longitude = location.longitude;
-  const urlPoint = `https://api.weather.gov/points/${latitude},${longitude}`;
-  let urlForecast = '';
+const Forecast = ({ tab, setFullLocation, fullLocation }) => {
+  const intervalForecast = 1; // minutes to call to open weather 
   
   const [forecastUpdate, setForecastUpdate] = useState('');
   const [forecastPeriods, setForecastPeriods] = useState([]);
-  
-  const getForecastUrl = () =>{
-    console.log('... getForecastUrl');
-    axios.get(urlPoint, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-    .then(res => {
-      urlForecast = res.data.properties.forecast;
-      getForecast();
-    });
-  }
 
   const getForecast = () =>{
-    if (urlForecast) {
+    if (fullLocation.urlForecast) {
       console.log('... getForecast');
-      axios.get(urlForecast, {
+      axios.get(fullLocation.urlForecast, {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -41,13 +22,11 @@ const Forecast = ({ tab }) => {
         setForecastUpdate(forecastTime);
         setForecastPeriods(res.data.properties.periods.splice(0,4));
       });
-    } else {
-      getForecastUrl();
     }
   }
 
   useEffect(() => {
-    getForecastUrl();
+    getForecast();
     setInterval(getForecast, intervalForecast*1000*60);
   },[])
 
@@ -71,7 +50,8 @@ const Forecast = ({ tab }) => {
 }
 
 const mapStateToProps = state => ({
-  tab: state.tab
+  tab: state.tab,
+  fullLocation: state.fullLocation
 });
 
 export default connect(mapStateToProps)(Forecast)

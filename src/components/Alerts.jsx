@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import location from '../config.json';
 import { connect } from 'react-redux';
 
 const GPIOEmulator = ({ headline }) => {
@@ -30,27 +29,28 @@ const GPIOEmulator = ({ headline }) => {
   )
 }
 
-const Alerts = ({tab}) => {
-  const intervalAlert = 5; // minutes 
-  const state = location.state;
-  const urlAlert = `https://api.weather.gov/alerts/active?area=${state}`;
+const Alerts = ({ tab, fullLocation }) => {
+  const intervalAlert = 1; // minutes 
   const [alarmUpdate, setAlarmUpdate] = useState('');
   const [alarmDetails, setAlarmDetails] = useState([]);
   
   const getAlerts = () =>{
-    console.log('... getAlerts');
-    axios.get(urlAlert, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-    .then(res => {
-      console.log(res.data)
-      const alarmClock = new Date(res.data.updated).toString()
-      setAlarmUpdate(alarmClock);
-      setAlarmDetails(res.data.features);
-    });
+    if (fullLocation.county){
+      console.log('... getAlerts');
+      const urlAlert = `https://api.weather.gov/alerts/active/zone/${fullLocation.county}`;
+      axios.get(urlAlert, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+      .then(res => {
+        console.log(res.data)
+        const alarmClock = new Date(res.data.updated).toString()
+        setAlarmUpdate(alarmClock);
+        setAlarmDetails(res.data.features);
+      });
+    }
   }
 
   useEffect(() => {
@@ -82,7 +82,8 @@ const Alerts = ({tab}) => {
 };
 
 const mapStateToProps = state => ({
-  tab: state.tab
+  tab: state.tab,
+  fullLocation: state.fullLocation
 })
 
 export default connect(mapStateToProps)(Alerts)

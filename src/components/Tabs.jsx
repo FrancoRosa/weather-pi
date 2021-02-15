@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { setTab } from "../actions";
 
-const Tabs = ({setTab}) => {
+const Tabs = ({ setTab }) => {
   const activateTab = event => {
     deactivateTabs();
     const element = event.target.tagName == 'A' ? event.target : event.target.parentElement;
@@ -23,25 +23,25 @@ const Tabs = ({setTab}) => {
         <li className="is-active">
           <a onClick={activateTab} id="tab_now">
             <i className="fas fa-clock tab-icon"></i>
-            <span className="tab-name">Now</span>
+            <span className="tab-name heading">Now</span>
           </a>
         </li>
         <li>
           <a onClick={activateTab} id="tab_forecast">
             <i className="fas fa-calendar-times tab-icon"></i>
-            <span className="tab-name">Forecast</span>
+            <span className="tab-name heading">Forecast</span>
           </a>
         </li>
         <li>
           <a onClick={activateTab} id="tab_alert">
             <i className="fas fa-exclamation-triangle tab-icon"></i>
-            <span className="tab-name">Alerts</span>
+            <span className="tab-name heading">Alerts</span>
           </a>
         </li>
         <li>
           <a onClick={activateTab} id="tab_location">
             <i className="fas fa-map-marker-alt tab-icon"></i>
-            <span className="tab-name">Location</span>
+            <span className="tab-name heading">Location</span>
           </a>
         </li>
       </ul>
