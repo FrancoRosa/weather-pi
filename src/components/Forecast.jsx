@@ -5,7 +5,7 @@ import LocationValue from './LocationValue';
 
 
 const Forecast = ({ tab, setFullLocation, fullLocation }) => {
-  const intervalForecast = 1; // minutes to call to open weather 
+  const intervalForecast = 5; // minutes to call to open weather 
   
   const [forecastUpdate, setForecastUpdate] = useState('');
   const [forecastPeriods, setForecastPeriods] = useState([]);
@@ -22,7 +22,6 @@ const Forecast = ({ tab, setFullLocation, fullLocation }) => {
       .then(res => {
         console.log('>> getForecast:');
         console.log(res.data);
-
         const forecastTime = new Date(res.data.properties.updated).toString();
         setForecastUpdate(forecastTime);
         setForecastPeriods(res.data.properties.periods);

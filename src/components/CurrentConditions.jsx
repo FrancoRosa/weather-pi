@@ -13,7 +13,7 @@ const watch = headline => {
 }
 
 const CurrentConditions = ({ tab, fullLocation }) => {
-  const intervalCurrent = 1; // minutes to call to open weather 
+  const intervalCurrent = 4; // minutes to call to open weather 
   const openWeatherKey = '37fe7dced1adaf904d0ca7f5e66ff95b'
   
   let weatherValues = {

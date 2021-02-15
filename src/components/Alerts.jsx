@@ -1,42 +1,32 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { connect } from 'react-redux';
+import LocationValue from './LocationValue';
 
-const GPIOEmulator = ({ headline }) => {
-  // warning, watch, advisory
-  // warning: show what the warning is.. and output to a GPIO
-  // watch: show what the watch is.. .and output to a GPIO
-  // advisory: show what the advisory is... No output to GPIO
-  // keywords: Tornado, Severe Thunderstorm
-  const warning = headline => {
-    if (headline) return headline.toLowerCase().includes('warning');
-    return false;
-  }
-  const watch = headline => {
-    if (headline) return headline.toLowerCase().includes('watch'); 
-    return false;
-  }
-
-  return (
-    <div>
-      <h3>GPIO OUTPUT</h3>
-      <h4>{headline}</h4>
-      <table>
-        <tr><th>Warning</th><td>{warning(headline) ? 'ON' : 'OFF'}</td></tr>
-        <tr><th>Watch</th><td>{watch(headline) ? 'ON' : 'OFF'}</td></tr>
-      </table>
-    </div>
-  )
+const warning = headline => {
+  if (headline) return headline.toLowerCase().includes('warning');
+  return false;
+}
+const watch = headline => {
+  if (headline) return headline.toLowerCase().includes('watch'); 
+  return false;
 }
 
 const Alerts = ({ tab, fullLocation }) => {
-  const intervalAlert = 1; // minutes 
+  const intervalAlert = 4; // minutes 
   const [alarmUpdate, setAlarmUpdate] = useState('');
-  const [alarmDetails, setAlarmDetails] = useState([]);
+  const [alarmDetails, setAlarmDetails] = useState([
+      {
+        properties: {
+          headline: ''
+        }
+      }
+    ],
+  );
+  const [alarmTitle, setAlarmTitle] = useState('  ');
   
-  const getAlerts = () =>{
+  const getAlerts = () => {
     if (fullLocation.countyCode){
-      console.log('... getAlerts');
       const urlAlert = `https://api.weather.gov/alerts/active/zone/${fullLocation.countyCode}`;
       axios.get(urlAlert, {
         headers: {
@@ -45,10 +35,12 @@ const Alerts = ({ tab, fullLocation }) => {
         }
       })
       .then(res => {
+        console.log('>> getAlerts:');
         console.log(res.data)
         const alarmClock = new Date(res.data.updated).toString()
         setAlarmUpdate(alarmClock);
         setAlarmDetails(res.data.features);
+        setAlarmTitle(res.data.title);
       });
     }
   }
@@ -60,23 +52,18 @@ const Alerts = ({ tab, fullLocation }) => {
 
   return (
     <div className={tab === 'alert' ? '' : 'is-hidden'}>
-      <h2>Alert:</h2>
-      <table>
-        <tbody>
-          <tr><th>Category:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.category : ''}</td></tr>
-          <tr><th>Severity:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.severity : ''}</td></tr>
-          <tr><th>Certainty:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.certainty : ''}</td></tr>
-          <tr><th>Urgency:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.urgency : ''}</td></tr>
-          <tr><th>Event:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.description : ''}</td></tr>
-          <tr><th>Headline:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.headline : ''}</td></tr>
-          <tr><th>Description:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.description : ''}</td></tr>
-          <tr><th>Instruction:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.instruction : ''}</td></tr>
-          <tr><th>NWSheadline:</th><td>{alarmDetails.length>0 ? alarmDetails[0].properties.parameters.NWSheadline : ''}</td></tr>
-        </tbody>
-      </table>
-      <GPIOEmulator headline={alarmDetails.length>0 ? alarmDetails[0].properties.headline : ''} />
-      <h3>Last Alarm Update:</h3>
-      <p>{alarmUpdate}</p>
+      <h1 className="title is-3 has-text-link has-text-centered">{`${alarmTitle[0].toUpperCase()}${alarmTitle.slice(1)}`}</h1>
+      {alarmDetails.map(alarm => (
+        <div>
+          <h1 
+            className={`title has-text-centered ${warning(alarm.properties.headline) ? 'has-text-danger' : ''} ${watch(alarm.properties.headline) ? 'has-text-warning' : ''}`}>
+            {alarm.properties.headline}
+          </h1>
+        </div>
+      ))}
+      <nav class="level">
+        <LocationValue heading='Last update' value={alarmUpdate.split('(')[0]} />
+      </nav>
     </div>
   );
 };

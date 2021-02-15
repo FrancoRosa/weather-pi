@@ -18,7 +18,6 @@ const Location = ({tab, google, selectedPlace, setLocationCoordinates, setLocati
   const getForecastUrl = (lat, lng) => {
     if (lat != 0 && lng != 0 ) {
       const urlPoint = `https://api.weather.gov/points/${lat},${lng}`;
-      console.log('... getForecastUrl');
       axios.get(urlPoint, {
         headers: {
           'Content-Type': 'application/json',
@@ -26,6 +25,8 @@ const Location = ({tab, google, selectedPlace, setLocationCoordinates, setLocati
         }
       })
       .then(res => {
+        console.log('>> getForecastUrl');
+        console.log(res.data);
         const urlForecast = res.data.properties.forecast;
         const urlCounty = res.data.properties.county
         const countyCode = urlCounty.split('county')[1].slice(1,7)
