@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { connect } from "react-redux";
 import LocationValue from './LocationValue';
+import { sendDataToRpi } from '../flask_server';
+import { setRpiResponse } from "../actions";
 
 
-const Forecast = ({ tab, setFullLocation, fullLocation }) => {
+const Forecast = ({ tab, setFullLocation, fullLocation, setRpiResponse }) => {
   const intervalForecast = 5; // minutes to call to open weather 
   
   const [forecastUpdate, setForecastUpdate] = useState('');
@@ -23,6 +25,7 @@ const Forecast = ({ tab, setFullLocation, fullLocation }) => {
         console.log('>> getForecast:');
         console.log(res.data);
         if (res.data) {
+          sendDataToRpi(res.data, 'forecast').then(data => setRpiResponse(data))
           const forecastTime = new Date(res.data.updated).toString();
           setForecastUpdate(forecastTime);
           setForecastPeriods(res.data.periods);
@@ -58,9 +61,13 @@ const Forecast = ({ tab, setFullLocation, fullLocation }) => {
   );
 }
 
+const mapDispatchToProps = dispatch => ({
+  setRpiResponse: rpi => dispatch(setRpiResponse(rpi))
+})
+
 const mapStateToProps = state => ({
   tab: state.tab,
   fullLocation: state.fullLocation
 });
 
-export default connect(mapStateToProps)(Forecast)
+export default connect(mapStateToProps, mapDispatchToProps)(Forecast)

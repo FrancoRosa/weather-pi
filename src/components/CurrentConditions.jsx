@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { connect } from 'react-redux';
 import LocationValue from './LocationValue';
+import { sendDataToRpi } from '../flask_server';
+import { setRpiResponse } from "../actions";
 
 const warning = headline => {
   if (headline) return headline.toLowerCase().includes('warning');
@@ -12,7 +14,7 @@ const watch = headline => {
   return false;
 }
 
-const CurrentConditions = ({ tab, fullLocation }) => {
+const CurrentConditions = ({ tab, fullLocation, setRpiResponse }) => {
   const intervalCurrent = 5; // minutes to call to open weather 
   const openWeatherKey = '37fe7dced1adaf904d0ca7f5e66ff95b'
   
@@ -45,6 +47,7 @@ const CurrentConditions = ({ tab, fullLocation }) => {
       .then(res => {
         console.log('>> Current Values:')
         console.log(res.data)
+        sendDataToRpi(res.data, 'current').then(data => setRpiResponse(data))
         setCurrentValues(res.data.current);
         setCurrentLocation({lat: res.data.lat, lon: res.data.lon})
         setCurrentAlerts(res.data.alerts ? res.data.alerts : []);
@@ -99,9 +102,13 @@ const CurrentConditions = ({ tab, fullLocation }) => {
   );
 }
 
+const mapDispatchToProps = dispatch => ({
+  setRpiResponse: rpi => dispatch(setRpiResponse(rpi))
+})
+
 const mapStateToProps = state => ({
   tab: state.tab,
   fullLocation: state.fullLocation
 })
 
-export default connect(mapStateToProps)(CurrentConditions)
+export default connect(mapStateToProps, mapDispatchToProps)(CurrentConditions)

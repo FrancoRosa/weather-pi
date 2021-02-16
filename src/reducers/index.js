@@ -1,10 +1,12 @@
 import { combineReducers, createStore } from 'redux';
 import tab from './tab';
+import rpi from './rpi';
 import fullLocation from './fullLocation';
 
 const rootReducer = combineReducers({
   tab,
   fullLocation,
+  rpi,
 });
 
 const store = createStore(

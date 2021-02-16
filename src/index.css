@@ -28,3 +28,11 @@
 .location-map {
   position: static;
 }
+
+.rpi-logo {
+  font-size: 1.5em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.5em;
+}

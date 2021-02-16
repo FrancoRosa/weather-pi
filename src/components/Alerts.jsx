@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { connect } from 'react-redux';
 import LocationValue from './LocationValue';
+import { sendDataToRpi } from '../flask_server';
+import { setRpiResponse } from "../actions";
 
 const warning = headline => {
   if (headline) return headline.toLowerCase().includes('warning');
@@ -12,7 +14,7 @@ const watch = headline => {
   return false;
 }
 
-const Alerts = ({ tab, fullLocation }) => {
+const Alerts = ({ tab, fullLocation, setRpiResponse }) => {
   const intervalAlert = 5; // minutes 
   const [alarmUpdate, setAlarmUpdate] = useState('');
   const [alarmDetails, setAlarmDetails] = useState([
@@ -49,7 +51,8 @@ const Alerts = ({ tab, fullLocation }) => {
       })
       .then(res => {
         console.log('>> getAlerts:');
-        console.log(res.data)
+        console.log(res.data);
+        sendDataToRpi(res.data, 'alerts').then(data => setRpiResponse(data))
         const alarmClock = new Date(res.data.updated).toString()
         setAlarmUpdate(alarmClock);
         setAlarmDetails(res.data.features);
@@ -86,9 +89,13 @@ const Alerts = ({ tab, fullLocation }) => {
   );
 };
 
+const mapDispatchToProps = dispatch => ({
+  setRpiResponse: rpi => dispatch(setRpiResponse(rpi))
+})
+
 const mapStateToProps = state => ({
   tab: state.tab,
   fullLocation: state.fullLocation
 })
 
-export default connect(mapStateToProps)(Alerts)
+export default connect(mapStateToProps, mapDispatchToProps)(Alerts)

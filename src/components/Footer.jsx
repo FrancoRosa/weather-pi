@@ -1,4 +1,6 @@
-const Footer = () => {
+import { connect } from "react-redux";
+
+const Footer = ({ rpi }) => {
   return (
     <footer className="footer">
       <div className="container">
@@ -10,8 +12,15 @@ const Footer = () => {
           </p>
         </div>
       </div>
+      <p className={`rpi-logo ${rpi ? 'has-text-success' : 'has-text-danger'}`} >
+        <i className='fab fa-raspberry-pi'></i>
+      </p>
     </footer>
   )
 };
 
-export default Footer;
+const mapStateToProps = state => ({
+  rpi: state.rpi
+})
+
+export default connect(mapStateToProps)(Footer);

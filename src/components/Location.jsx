@@ -1,26 +1,24 @@
-import { setLocationCoordinates, setLocationData } from "../actions";
+import { setLocationCoordinates, setLocationData, setRpiResponse } from "../actions";
+import { sendDataToRpi }from '../flask_server';
 import { connect } from 'react-redux';
 import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import axios from 'axios';
 import LocationValue from './LocationValue';
 
-const Location = ({tab, google, selectedPlace, setLocationCoordinates, setLocationData, fullLocation}) => {
+const Location = ({
+  tab, google, selectedPlace, 
+  setLocationCoordinates, setLocationData, fullLocation,
+  setRpiResponse
+}) => {
   
   const onMapClick = (mapProps, map, clickEvent) =>{
     if (clickEvent.latLng){
       const lat = clickEvent.latLng.lat().toFixed(5);
       const lng = clickEvent.latLng.lng().toFixed(5);
-      // setLocationData({urlForecast: '', countyCode: '', stateCode: ''})
-      // setLocationCoordinates({lat, lng});
-      // getForecastUrl(lat, lng);
-      const pythonServer = 'http://localhost:9999/api/v1/'
-      const payload = {lat, lng, key: 'location'}
-      axios({
-        method: 'POST',
-        url: pythonServer,
-        data: payload,
-      })
-      .then(res => console.log(res.data));
+      setLocationData({urlForecast: '', countyCode: '', stateCode: ''})
+      setLocationCoordinates({lat, lng});
+      getForecastUrl(lat, lng);
+      sendDataToRpi({lat, lng}, 'location').then(data => setRpiResponse(data))
     }
   }
 
@@ -46,6 +44,7 @@ const Location = ({tab, google, selectedPlace, setLocationCoordinates, setLocati
       .catch(error => console.log(error));
     }
   }
+  
   const containerStyle = {
     width: '100%',
     height: '50%',
@@ -71,7 +70,8 @@ const Location = ({tab, google, selectedPlace, setLocationCoordinates, setLocati
 
 const mapDispatchToProps = dispatch => ({
   setLocationData: data => dispatch(setLocationData(data)),
-  setLocationCoordinates: coordinates => dispatch(setLocationCoordinates(coordinates))
+  setLocationCoordinates: coordinates => dispatch(setLocationCoordinates(coordinates)),
+  setRpiResponse: rpi => dispatch(setRpiResponse(rpi))
 })
 
 const mapStateToProps = state => ({
