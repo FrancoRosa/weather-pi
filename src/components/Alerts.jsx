@@ -55,7 +55,7 @@ const Alerts = ({ tab, fullLocation, setRpiResponse }) => {
         sendDataToRpi(res.data, 'alerts').then(data => setRpiResponse(data))
         const warningio = warning(res.data.title);
         const watchio = watch(res.data.title);
-        sendDataToRpi({watchio, warningio}, 'alerts').then(data => setRpiResponse(data))
+        sendDataToRpi({watchio, warningio}, 'gpio').then(data => setRpiResponse(data))
         const alarmClock = new Date(res.data.updated).toString()
         setAlarmUpdate(alarmClock);
         setAlarmDetails(res.data.features);
