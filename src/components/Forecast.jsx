@@ -16,17 +16,18 @@ const Forecast = ({ tab, setFullLocation, fullLocation }) => {
       axios.get(fullLocation.urlForecast, {
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/ld+json',
         }
       })
       .then(res => {
         console.log('>> getForecast:');
         console.log(res.data);
-        const forecastTime = new Date(res.data.properties.updated).toString();
-        setForecastUpdate(forecastTime);
-        setForecastPeriods(res.data.properties.periods);
-        setForecastLocation(res.data.geometry.coordinates[0][0])
-      });
+        if (res.data) {
+          const forecastTime = new Date(res.data.updated).toString();
+          setForecastUpdate(forecastTime);
+          setForecastPeriods(res.data.periods);
+        }
+    });
     }
   }
 
@@ -42,7 +43,7 @@ const Forecast = ({ tab, setFullLocation, fullLocation }) => {
   return (
     <div className={tab === 'forecast' ? '' : 'is-hidden'}>
       {forecastPeriods.map(period => (
-        <nav class="level">
+        <nav class="level" key={forecastPeriods.indexOf(period)}>
           <LocationValue heading={period.name} value={period.shortForecast} />
         </nav>
       ))}

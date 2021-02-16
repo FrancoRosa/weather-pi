@@ -21,7 +21,6 @@ const CurrentConditions = ({ tab, fullLocation }) => {
     humidity: '',
     wind_speed: '',
     pressure: '',
-    pressure: '',
     dewpoint: '',
     visibility: '',
     uvi: '',
@@ -35,7 +34,7 @@ const CurrentConditions = ({ tab, fullLocation }) => {
   
   const getCurrentValues = location =>{
     const { lat, lng } = location;
-    if (lat != 0 && lng != 0){
+    if (lat !== 0 && lng !== 0){
       const urlOpenWeather = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&exclude=daily,hourly,minutely&appid=${openWeatherKey}&units=imperial`;
       axios.get(urlOpenWeather, {
         headers: {
@@ -48,7 +47,7 @@ const CurrentConditions = ({ tab, fullLocation }) => {
         console.log(res.data)
         setCurrentValues(res.data.current);
         setCurrentLocation({lat: res.data.lat, lon: res.data.lon})
-        setCurrentAlerts(res.data.alerts);
+        setCurrentAlerts(res.data.alerts ? res.data.alerts : []);
         const currentClock = Date(currentValues.dt)
         setCurrentUpdate(currentClock);
       });
@@ -77,7 +76,7 @@ const CurrentConditions = ({ tab, fullLocation }) => {
         <LocationValue heading='Barometer (in)' value={currentValues.pressure} />
         <LocationValue heading='Dewpoint (F)' value={currentValues.dew_point} />
         <LocationValue heading='Visibility (mi)' value={currentValues.visibility} />
-        <LocationValue heading='UV Index (mph)' value={currentValues.uvi} />
+        <LocationValue heading='UV Index[>7 Very high]' value={currentValues.uvi} />
       </nav>
       <nav class="level">
         <div class="level-item has-text-centered">

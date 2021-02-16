@@ -10,39 +10,51 @@ const Location = ({tab, google, selectedPlace, setLocationCoordinates, setLocati
     if (clickEvent.latLng){
       const lat = clickEvent.latLng.lat().toFixed(5);
       const lng = clickEvent.latLng.lng().toFixed(5);
-      setLocationCoordinates({lat, lng})
-      getForecastUrl(lat, lng)
+      // setLocationData({urlForecast: '', countyCode: '', stateCode: ''})
+      // setLocationCoordinates({lat, lng});
+      // getForecastUrl(lat, lng);
+      const pythonServer = 'http://localhost:9999/api/v1/'
+      const payload = {lat, lng, key: 'location'}
+      axios({
+        method: 'POST',
+        url: pythonServer,
+        data: payload,
+      })
+      .then(res => console.log(res.data));
     }
   }
 
   const getForecastUrl = (lat, lng) => {
     if (lat != 0 && lng != 0 ) {
+      console.log('... getForecastUrl');
       const urlPoint = `https://api.weather.gov/points/${lat},${lng}`;
       axios.get(urlPoint, {
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
+          'Accept': 'application/json',
+        },
       })
       .then(res => {
-        console.log('>> getForecastUrl');
+        console.log('>> ForecastUrl:');
         console.log(res.data);
         const urlForecast = res.data.properties.forecast;
         const urlCounty = res.data.properties.county
         const countyCode = urlCounty.split('county')[1].slice(1,7)
         const stateCode = countyCode.slice(0,2)
         setLocationData({urlForecast, countyCode, stateCode})
-      });
+      })
+      .catch(error => console.log(error));
     }
   }
   const containerStyle = {
     width: '100%',
     height: '50%',
     display: 'block',
+    zIndex: '0',
   }
 
   return (
-    <div className={tab === 'location' ? '' : 'is-hidden'}>
+    <div className={`location-map ${tab === 'location' ? '' : 'is-hidden'}`}>
       <nav class="level">
         <LocationValue heading='lalitude' value={fullLocation.lat} />
         <LocationValue heading='longitude' value={fullLocation.lng} />

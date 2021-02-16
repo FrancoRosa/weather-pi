@@ -25,14 +25,27 @@ const Alerts = ({ tab, fullLocation }) => {
   );
   const [alarmTitle, setAlarmTitle] = useState('  ');
   
+  const eraseAlertValues = () => {
+    setAlarmUpdate('');
+    setAlarmDetails([
+        {
+          properties: {
+            headline: ''
+          }
+        }
+      ],
+    );
+    setAlarmTitle('  ');
+  }
+
   const getAlerts = () => {
     if (fullLocation.countyCode){
       const urlAlert = `https://api.weather.gov/alerts/active/zone/${fullLocation.countyCode}`;
       axios.get(urlAlert, {
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
+          'Accept': 'application/json',
+        },
       })
       .then(res => {
         console.log('>> getAlerts:');
@@ -52,6 +65,7 @@ const Alerts = ({ tab, fullLocation }) => {
 
   useEffect(() => {
     getAlerts();
+    eraseAlertValues();
   }, [fullLocation])
 
   return (

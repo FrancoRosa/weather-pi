@@ -1,7 +1,9 @@
 .footer {
   margin: 0;
   padding: 1em 0;
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .tab-icon{
@@ -21,4 +23,8 @@
 
 .footer-icon {
   padding: 0 0.2em;
+}
+
+.location-map {
+  position: static;
 }
