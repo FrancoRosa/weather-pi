@@ -16,7 +16,6 @@ def home():
 @app.route('/api/v1/', methods=['POST'])
 def api_save_data():
   content = request.get_json()
-  print('>>>>>>>>>>')
   print(content)
   key = content['key']
   if r.set(key, json.dumps(content)):
