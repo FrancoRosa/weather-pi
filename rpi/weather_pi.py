@@ -36,8 +36,31 @@ def get_alerts(county_code):
   print(json_response['features'])
   return json_response
 
+# Step 1. Get the forecast URL and county code.
+print('... get forecast url and county code')
 [forecast_url, county_code] = get_forecast_url_and_county_code(LATITUDE, LONGITUDE)
+print('forecast url:', forecast_url)
+print('county code:', county_code)
+print('')
 
-# get_forecast(forecast_url)
+# Step 2. Get weather reports every n seconds.
+while True:
+  print('... get current conditions')
+  current_conditions = get_current_conditions(LATITUDE, LONGITUDE, API_KEY);
+  print(json.dumps(current_conditions, indent=4))
+  print('')
   
-print(json.dumps(get_alerts(county_code), indent=4))
+  print('... get forecast')
+  forecast = get_forecast(forecast_url)
+  print(json.dumps(forecast, indent=4))
+  print('')
+
+  print('... get alerts')
+  alerts = get_alerts(county_code)
+  print(json.dumps(alerts, indent=4))
+  print('')
+  
+  print('')
+  print('')
+ 
+  sleep(15)

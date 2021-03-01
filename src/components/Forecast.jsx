@@ -47,7 +47,7 @@ const Forecast = ({ tab, setFullLocation, fullLocation, setRpiResponse }) => {
     <div className={tab === 'forecast' ? '' : 'is-hidden'}>
       {forecastPeriods.map(period => (
         <nav class="level" key={forecastPeriods.indexOf(period)}>
-          <LocationValue heading={period.name} value={period.shortForecast} />
+          <LocationValue heading={period.name} value={period.detailedForecast} truncate={true}/>
         </nav>
       ))}
       <nav class="level">
