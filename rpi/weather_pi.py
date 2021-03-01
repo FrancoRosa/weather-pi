@@ -21,9 +21,7 @@ def get_forecast_url_and_county_code(latitude, longitude):
   response = requests.get(weather_gov_url)
   json_response = response.json()
   forecast_url = json_response['properties']['forecast']
-  print('>>>>>>>>> county:')
   county_code = json_response['properties']['county'].split('/')[-1]
-  print(county_code)
   return [forecast_url, county_code]
 
 def get_forecast(forecast_url):
@@ -31,11 +29,15 @@ def get_forecast(forecast_url):
   json_response = response.json()
   return json_response
 
-def get_alerts(forecast_url):
-  return 0
+def get_alerts(county_code):
+  alerts_url = 'https://api.weather.gov/alerts/active/zone/%s'%county_code
+  response = requests.get(alerts_url)
+  json_response = response.json()
+  print(json_response['features'])
+  return json_response
 
-print('>>>>>>>')
 [forecast_url, county_code] = get_forecast_url_and_county_code(LATITUDE, LONGITUDE)
+
 # get_forecast(forecast_url)
   
-# print(json.dumps(json_response, indent=4))
+print(json.dumps(get_alerts(county_code), indent=4))
