@@ -43,7 +43,7 @@ alerts = {}
 def get_data_from_apis():
   global current, forecast, alerts
   while True:
-    sleep(15)
+    sleep(60)
     try:
       print('...fetching api data')
       current = get_current_conditions(LATITUDE, LONGITUDE, API_KEY)

@@ -1,10 +1,27 @@
 
 <html>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
     <head>
         <title>WeatherApp</title>
     </head>
     <body>
-        <p><span>Temp:</span>{{current['current'][temp]}}</p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Temperature</th>
+                    <th>Humidity</th>
+                    <th>Wind</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ current['current']['temp'] }}</td>
+                    <td>{{ current['current']['humidity'] }}</td>
+                    <td>{{ current['current']['wind_speed'] }}</td>
+                </tr>
+            </tbody>
+            
+        </table>
+        <p><span>Temp:</span></p>
     </body>
 </html>
