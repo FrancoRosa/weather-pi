@@ -1,10 +1,13 @@
-from time import sleep
+from datetime import datetime
+from time import sleep, time
 import requests
 import json
 
 LATITUDE = 38.73121
 LONGITUDE = -96.74154
-API_KEY = '37fe7dced1adaf904d0ca7f5e66ff95b'
+API_KEY_OPENWEATHER = '37fe7dced1adaf904d0ca7f5e66ff95b'
+UNSPLASH_KEY = 'RLzN7LjpiPzG6SPW0QW5IMjZMsoBlOP_7K_uXtpZ75A'
+UNSPLASH_SECRET = 'ICrB54iYe3LHbd2_6LfMlOhcrRUvXbEtuoY4TZYOW3A'
 
 def get_current_conditions(latitude, longitude, api_key):
   open_weather_url = 'https://api.openweathermap.org/data/2.5/onecall?'
@@ -33,21 +36,39 @@ def get_alerts(county_code):
   json_response = response.json()
   return json_response
 
+def get_unsplash_token(UNSPLASH_KEY, UNSPLASH_SECRET):
+  unsplash_url = 'https://unsplash.com/oauth/token?grant_type=authorization_code&client_id=%s&client_secret=%s'%(UNSPLASH_KEY, UNSPLASH_SECRET)
+  response = requests.get(unsplash_url)
+  json_response = response.json()
+  return json_response
+
+def get_photo(word):
+  unsplash_url = 'https://api.unsplash.com/photos/random?orientation=landscape&query=%s'%word
+  response = requests.get(unsplash_url)
+  json_response = response.json()
+  return json_response
+
 [forecast_url, county_code] = get_forecast_url_and_county_code(LATITUDE, LONGITUDE)
 print('.. url and county', forecast_url, county_code)
 
 current = {}
 forecast = {}
 alerts = {}
+now = datetime.now()
+
+print(json.dumps(get_unsplash_token(UNSPLASH_KEY, UNSPLASH_SECRET),indent=4))
+print(json.dumps(get_photo('sunny'),indent=4))
 
 def get_data_from_apis():
-  global current, forecast, alerts
+  global current, forecast, alerts, now
   while True:
-    sleep(60)
-    try:
-      print('...fetching api data')
-      current = get_current_conditions(LATITUDE, LONGITUDE, API_KEY)
-      forecast = get_forecast(forecast_url)
-      alerts = get_alerts(county_code)
-    except:
-      pass
+    sleep(1)
+    now = datetime.now()
+    if now.second == 0:
+      try:
+        print('...fetching api data')
+        current = get_current_conditions(LATITUDE, LONGITUDE, API_KEY_OPENWEATHER)
+        forecast = get_forecast(forecast_url)
+        alerts = get_alerts(county_code)
+      except:
+        pass

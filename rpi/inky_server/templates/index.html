@@ -1,27 +1,73 @@
-
 <html>
     <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='custom.css') }}">
     <head>
         <title>WeatherApp</title>
     </head>
     <body>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Temperature</th>
-                    <th>Humidity</th>
-                    <th>Wind</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ current['current']['temp'] }}</td>
-                    <td>{{ current['current']['humidity'] }}</td>
-                    <td>{{ current['current']['wind_speed'] }}</td>
-                </tr>
-            </tbody>
-            
-        </table>
-        <p><span>Temp:</span></p>
+        <p class="time sub-title is-3 has-text-danger">
+            {{now.strftime("%d/%m %H:%M")}}
+        </p>
+        <div class="container current">
+            {% if current %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Temperature</th>
+                            <th>Humidity</th>
+                            <th>Wind</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ current['current']['temp'] }}</td>
+                            <td>{{ current['current']['humidity'] }}</td>
+                            <td>{{ current['current']['wind_speed'] }}</td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            {% endif %}
+        </div>
+        <hr />
+        <div class="container">
+            {% if forecast %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{ forecast['properties']['periods'][0]['name'] }}</th>
+                            <th>{{ forecast['properties']['periods'][1]['name'] }}</th>
+                            <th>{{ forecast['properties']['periods'][2]['name'] }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Forecast</th>
+                            <td>{{ forecast['properties']['periods'][0]['shortForecast'] }}</td>
+                            <td>{{ forecast['properties']['periods'][1]['shortForecast'] }}</td>
+                            <td>{{ forecast['properties']['periods'][2]['shortForecast'] }}</td>
+                        </tr>
+                        <tr>
+                            <th>Wind</th>
+                            <td>{{ forecast['properties']['periods'][0]['windSpeed'] }}</td>
+                            <td>{{ forecast['properties']['periods'][1]['windSpeed'] }}</td>
+                            <td>{{ forecast['properties']['periods'][2]['windSpeed'] }}</td>
+                        </tr>
+                    </tbody>
+                    
+                </table>
+            {% endif %}
+        </div>
+        <hr />
+        <div class="container">
+            {% if alerts %}
+                {% if alerts['features'] %}
+                    <p>{{alerts['features'][0]['headlines']}}</p>
+                {% else %}
+                    <p class="has-text-success">No alerts found</p>
+                {% endif %}
+            {% endif %}
+        </div>
     </body>
 </html>
