@@ -13,6 +13,8 @@ body {
   width: 400px;
   overflow: hidden; /* Hide scrollbars */
   font-size: 10px !important;
+  background: rgb(223,6,6);
+  background: linear-gradient(38deg, rgba(223,6,6,0.3309698879551821) 50%, rgba(252,176,69,0.4206057422969187) 100%);
 }
 
 .time {
@@ -29,7 +31,7 @@ body {
 }
 
 .container {
-  margin-top: 1em;
+  margin: 1em 0;
   width: 100%;
   display: flex;
   align-items: center;

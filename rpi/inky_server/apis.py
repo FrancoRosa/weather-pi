@@ -9,6 +9,11 @@ API_KEY_OPENWEATHER = '37fe7dced1adaf904d0ca7f5e66ff95b'
 UNSPLASH_KEY = 'RLzN7LjpiPzG6SPW0QW5IMjZMsoBlOP_7K_uXtpZ75A'
 UNSPLASH_SECRET = 'ICrB54iYe3LHbd2_6LfMlOhcrRUvXbEtuoY4TZYOW3A'
 
+current = {}
+forecast = {}
+alerts = {}
+now = datetime.now()
+
 def get_current_conditions(latitude, longitude, api_key):
   open_weather_url = 'https://api.openweathermap.org/data/2.5/onecall?'
   url_params = 'lat=%d&lon=%d&exclude=daily,hourly,minutely&appid=%s&units=imperial'%(latitude, longitude, api_key)
@@ -36,28 +41,8 @@ def get_alerts(county_code):
   json_response = response.json()
   return json_response
 
-def get_unsplash_token(UNSPLASH_KEY, UNSPLASH_SECRET):
-  unsplash_url = 'https://unsplash.com/oauth/token?grant_type=authorization_code&client_id=%s&client_secret=%s'%(UNSPLASH_KEY, UNSPLASH_SECRET)
-  response = requests.get(unsplash_url)
-  json_response = response.json()
-  return json_response
-
-def get_photo(word):
-  unsplash_url = 'https://api.unsplash.com/photos/random?orientation=landscape&query=%s'%word
-  response = requests.get(unsplash_url)
-  json_response = response.json()
-  return json_response
-
 [forecast_url, county_code] = get_forecast_url_and_county_code(LATITUDE, LONGITUDE)
 print('.. url and county', forecast_url, county_code)
-
-current = {}
-forecast = {}
-alerts = {}
-now = datetime.now()
-
-print(json.dumps(get_unsplash_token(UNSPLASH_KEY, UNSPLASH_SECRET),indent=4))
-print(json.dumps(get_photo('sunny'),indent=4))
 
 def get_data_from_apis():
   global current, forecast, alerts, now
